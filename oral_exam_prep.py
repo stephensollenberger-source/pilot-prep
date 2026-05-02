@@ -78,8 +78,9 @@ EVALUATION_SCHEMA = {
         "key_points_covered": {"type": "array", "items": {"type": "string"}},
         "key_points_missed": {"type": "array", "items": {"type": "string"}},
         "examiner_note": {"type": "string"},
+        "sources": {"type": "string"},
     },
-    "required": ["rating", "feedback", "key_points_covered", "key_points_missed", "examiner_note"],
+    "required": ["rating", "feedback", "key_points_covered", "key_points_missed", "examiner_note", "sources"],
     "additionalProperties": False,
 }
 
@@ -221,7 +222,11 @@ def evaluate(
                 f"Evaluate this student's complete performance.\n\n"
                 f"**Question:** {question}\n**Answer:** {answer}\n\n"
                 f"**Follow-up:** {followup}\n**Follow-up answer:** {followup_answer}\n\n"
-                f"Rate as Pass, Needs Work, or Unsatisfactory. Be honest and specific."
+                f"Rate as Pass, Needs Work, or Unsatisfactory. Be honest and specific.\n\n"
+                f"In the 'sources' field, list the specific FAR parts, AIM chapters, or ACS "
+                f"task elements that are directly relevant to this question and answer — "
+                f"e.g. 'FAR 61.57, AIM 7-1-2, ACS Area of Operation I Task A'. "
+                f"Include only sources directly applicable; omit any that are not relevant."
             ),
         }],
     )
@@ -679,6 +684,17 @@ st.set_page_config(
     layout="centered",
 )
 st.markdown(CSS, unsafe_allow_html=True)
+st.markdown(
+    '<div style="background:#161b22; border:1px solid #30363d; border-left:3px solid #d29922; '
+    'border-radius:0 6px 6px 0; padding:10px 16px; margin-bottom:16px; color:#8b949e; '
+    'font-size:0.82em; line-height:1.5;">'
+    '<span style="color:#d29922; font-weight:700;">Practice Tool Only</span> &mdash; '
+    'DPE Sim AI generates questions and evaluations using AI. Always verify answers against '
+    'current FAA publications, the ACS, and your CFI. Not a substitute for official study '
+    'materials or flight instruction.'
+    '</div>',
+    unsafe_allow_html=True,
+)
 
 if not os.environ.get("ANTHROPIC_API_KEY"):
     st.error(
@@ -886,6 +902,13 @@ with tab_exam:
 
             st.write("")
             st.caption(f"DPE note: {ev['examiner_note']}")
+            if ev.get("sources"):
+                st.markdown(
+                    f'<div style="margin-top:10px; color:#8b949e; font-size:0.8em;">'
+                    f'<span style="color:#d29922; font-weight:700;">Sources:</span> '
+                    f'{ev["sources"]}</div>',
+                    unsafe_allow_html=True,
+                )
             st.write("")
 
             is_last = q_num >= total

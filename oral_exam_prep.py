@@ -670,7 +670,7 @@ HERO_HTML = """<div class="hero-wrap">
 </div>
 <div class="hero-text">
 <div class="hero-label">AI-Powered Checkride Prep</div>
-<h1 class="hero-title">Pilot Oral<br>Exam Prep</h1>
+<h1 class="hero-title">DPE Sim AI</h1>
 <p class="hero-sub">Realistic AI examiner &middot; Structured feedback &middot; ACS standards</p>
 </div>
 </div>"""
@@ -679,7 +679,7 @@ HERO_HTML = """<div class="hero-wrap">
 # ── App setup ──────────────────────────────────────────────────────────────────
 
 st.set_page_config(
-    page_title="Pilot Oral Exam Prep",
+    page_title="DPE Sim AI",
     page_icon="✈️",
     layout="centered",
 )
@@ -728,7 +728,7 @@ for k, v in _DEFAULTS.items():
 # ── Sidebar ────────────────────────────────────────────────────────────────────
 
 with st.sidebar:
-    st.markdown("### ✈️ Pilot Oral Exam Prep")
+    st.markdown("### ✈️ DPE Sim AI")
     st.caption("AI-powered checkride preparation")
 
     if st.session_state.phase == "exam":
